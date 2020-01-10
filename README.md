@@ -20,8 +20,20 @@ Once VRTK is succesfully linked to the OVR Camera Rig, you can drop the included
 
 ## How To Use
 
-Coming Soon!
+This framework simply abstracts how Oculus Input is handled differently between hand tracking and controllers. As such, in order to have a common set of inputs, the framework maps the pinch actions provided by Oculus Hand Tracking to 4 core button inputs :
+  - Trigger : Index Finger Pinch
+  - Grip : Middle Finger Ping
+  - A Button : Ring Finger Pinch
+  - B Button : Pinky Pinch
+ 
+The above mapping are defaults and these defaults can be overridden on the HandsController script ( located on the Input Manager prefab ). Should you need to, you can get the input data directly from the Touch Controller script as well as Hands Controller script.
+ 
+However, if you are just interested in getting input from the active controller input scheme ( either physical controllers or hand tracking ), those methods are accessible via the Singleton Input Manager, which is responsible for getting input from the active control scheme.
+  - GetButton(Hand , Button) : Get whether a controller button or hand pinch is pressed or not
+  - GetAxis(Hand , Button) : Get the range of how much a controller button is pressed or how much pinch strength is used
 
+For the purposes of VRTK integration, you can also use the provided OVRButton and OVRAxis prefabs, which are responsible for hooking into VRTK Boolean Actions or Float/Axis Actions respectively. See the sample scene to see how the Trigger Input is used to hook into VRTK for climbing. 
+ 
 ## Video Documentation
 
 Coming Soon!
