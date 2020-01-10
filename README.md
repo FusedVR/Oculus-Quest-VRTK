@@ -10,7 +10,7 @@ A wrapper Unity framework for VRTK 4.0 that supports a seamless way to support b
   - [VRTK Prefabs 4.0 v1.1.8](https://github.com/ExtendRealityLtd/VRTK.Prefabs)
   - [Oculus SDK (v12)](https://assetstore.unity.com/packages/tools/integration/oculus-integration-82022)
   - [LowPoly SciFi Pack](https://assetstore.unity.com/packages/3d/environments/sci-fi/free-lowpoly-scifi-110070)
-  - [Starfield Skybox] (https://assetstore.unity.com/packages/2d/textures-materials/sky/starfield-skybox-92717)
+  - [Starfield Skybox](https://assetstore.unity.com/packages/2d/textures-materials/sky/starfield-skybox-92717)
   
 ## Setup
 
