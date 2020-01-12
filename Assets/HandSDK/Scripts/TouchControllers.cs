@@ -5,15 +5,6 @@ namespace FusedVR {
     /// </summary>
     public class TouchControllers : InputControl {
 
-        #region Properties
-        //NOTE: Both these objects could be referenced as GameObjects instead
-        // I choose the OVRHelper to make it easier to select the correct object
-        [Tooltip("A reference to the left hand controller prefab")]
-        public OVRControllerHelper leftHand;
-        [Tooltip("A reference to the right hand controller prefab")]
-        public OVRControllerHelper rightHand;
-        #endregion
-
         #region InputControlMethods
 
         /// <summary>
@@ -39,15 +30,6 @@ namespace FusedVR {
             OVRInput.Axis1D axis = AxisMap(b); //maps abstract buttons to OVR Axis
             if (axis != OVRInput.Axis1D.None) return OVRInput.Get(axis, hand); //null check to make sure an axis exists
             else return GetButton(h, b) ? 1f : 0f; //if no axis exists, then just get a bool value and return 0 or 1
-        }
-
-        /// <summary>
-        /// Whether or not to show the visuals for this controller
-        /// </summary>
-        /// <param name="show">True = show. False = to hide.</param>
-        public override void Show(bool show) {
-            leftHand.gameObject.SetActive(show);
-            rightHand.gameObject.SetActive(show);
         }
         #endregion
 

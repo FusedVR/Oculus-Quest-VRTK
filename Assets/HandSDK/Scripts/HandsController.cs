@@ -6,11 +6,6 @@ namespace FusedVR {
     public class HandsController : InputControl {
 
         #region Properties
-        [Tooltip("A reference to the left hand tracking prefab")]
-        public OVRHand leftHand;
-        [Tooltip("A reference to the right hand tracking prefab")]
-        public OVRHand rightHand;
-
         [Tooltip("Customizable mapping of Finger to Trigger Input Button")]
         public OVRHand.HandFinger triggerFinger = OVRHand.HandFinger.Index;
         [Tooltip("Customizable mapping of Finger to Grip Input Button")]
@@ -29,9 +24,16 @@ namespace FusedVR {
         /// <param name="b">Which button is being pressed</param>
         /// <returns>A bool indicating whether the given button has been pressed</returns>
         public override bool GetButton(Hand h, Button b) {
-            OVRHand hand = (h == Hand.Left) ? leftHand : rightHand;
-            OVRHand.HandFinger finger = FingerMap(b);
-            return hand.GetFingerIsPinching(finger);
+            GameObject handObj = (h == Hand.Left) ? leftHand : rightHand;
+            OVRHand hand = handObj.GetComponent<OVRHand>();
+
+            if (hand) {
+                OVRHand.HandFinger finger = FingerMap(b);
+                return hand.GetFingerIsPinching(finger);
+            }
+
+            Debug.LogError("MISSED BUTTON");
+            return false; //null check for hand
         }
 
         /// <summary>
@@ -41,18 +43,16 @@ namespace FusedVR {
         /// <param name="b">Which button is being pressed</param>
         /// <returns>A float from 0-1 indicating how much the input has been pressed</returns>
         public override float GetAxis(Hand h, Button b) {
-            OVRHand hand = (h == Hand.Left) ? leftHand : rightHand;
-            OVRHand.HandFinger finger = FingerMap(b);
-            return hand.GetFingerPinchStrength(finger);
-        }
+            GameObject handObj = (h == Hand.Left) ? leftHand : rightHand;
+            OVRHand hand = handObj.GetComponent<OVRHand>();
 
-        /// <summary>
-        /// Whether or not to show the visuals for this controller
-        /// </summary>
-        /// <param name="show">True = show. False = to hide.</param>
-        public override void Show(bool show) {
-            leftHand.gameObject.SetActive(show);
-            rightHand.gameObject.SetActive(show);
+            if (hand) {
+                OVRHand.HandFinger finger = FingerMap(b);
+                return hand.GetFingerPinchStrength(finger);
+            }
+
+            Debug.LogError("MISSED AXIS");
+            return 0f;
         }
 
         /// <summary>
