@@ -5,6 +5,14 @@ namespace FusedVR {
     /// Abstract Class used to have a consistent input control scheme between hand tracking and controller input
     /// </summary>
     public abstract class InputControl : MonoBehaviour {
+
+        #region Properties
+
+        [Tooltip("A reference to the left hand tracking prefab")]
+        public GameObject leftHand;
+        [Tooltip("A reference to the right hand tracking prefab")]
+        public GameObject rightHand;
+
         /// <summary>
         /// Abstract representations of buttons. Can be overridden for more types of buttons
         /// </summary>
@@ -18,12 +26,17 @@ namespace FusedVR {
         public enum Hand {
             Left, Right
         }
+        #endregion
 
+        #region Methods
         /// <summary>
         /// Whether or not to show the visuals for this controller
         /// </summary>
         /// <param name="show">True = show. False = to hide.</param>
-        public abstract void Show(bool show);
+        public virtual void Show(bool show) {
+            if ( leftHand ) leftHand.SetActive(show);
+            if ( rightHand ) rightHand.SetActive(show);
+        }
 
         /// <summary>
         /// Get a float value representing how much a button has been pressed from the control scheme
@@ -40,6 +53,7 @@ namespace FusedVR {
         /// <param name="b">Which button is being pressed</param>
         /// <returns>A bool indicating whether the given button has been pressed</returns>
         public abstract bool GetButton(Hand h, Button b);
+        #endregion
     }
 }
 

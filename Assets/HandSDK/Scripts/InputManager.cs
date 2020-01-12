@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Zinnia.Tracking.CameraRig;
 
 namespace FusedVR {
     /// <summary>
@@ -7,6 +8,9 @@ namespace FusedVR {
     /// </summary>
     public class InputManager : MonoBehaviour {
         #region Properties
+
+        [Tooltip("OVR Camera Rig Linked Alias Connection for VRTK")]
+        public LinkedAliasAssociationCollection ovrRig;
 
         [Tooltip("Hand Tracking Input Control Scheme")]
         public InputControl hands;
@@ -30,6 +34,7 @@ namespace FusedVR {
         // Start is called before the first frame update
         void Start() {
             currControl = OVRPlugin.GetActiveController(); //set active
+            Swap(currControl); //set defaults
         }
 
         // Update is called once per frame
@@ -51,6 +56,14 @@ namespace FusedVR {
             bool swap = (controller == OVRPlugin.Controller.Hands); //if hands then true otherwise false
             hands.Show(swap);
             controllers.Show(!swap);
+
+            if ( swap && ovrRig ) { // if hands, because the hand data forward is incorrectly offset by 90 degrees
+                ovrRig.LeftController.transform.localRotation = Quaternion.Euler(0f , 90f , 0f);
+                ovrRig.RightController.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
+            } else if ( ovrRig ) { //if controllers, reset back to identity
+                ovrRig.LeftController.transform.localRotation = Quaternion.identity;
+                ovrRig.RightController.transform.localRotation = Quaternion.identity;
+            }
         }
 
         /// <summary>
