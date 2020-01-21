@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using static OVRHand;
+
 namespace FusedVR {
     /// <summary>
     /// This class respresents a mapping for the control scheme used for Hand Tracking
@@ -7,13 +9,13 @@ namespace FusedVR {
 
         #region Properties
         [Tooltip("Customizable mapping of Finger to Trigger Input Button")]
-        public OVRHand.HandFinger triggerFinger = OVRHand.HandFinger.Index;
+        public HandFinger triggerFinger = HandFinger.Index;
         [Tooltip("Customizable mapping of Finger to Grip Input Button")]
-        public OVRHand.HandFinger gripFinger = OVRHand.HandFinger.Middle;
+        public HandFinger gripFinger = HandFinger.Middle;
         [Tooltip("Customizable mapping of Finger to A Input Button")]
-        public OVRHand.HandFinger aFinger = OVRHand.HandFinger.Ring;
+        public HandFinger aFinger = HandFinger.Ring;
         [Tooltip("Customizable mapping of Finger to B Input Button")]
-        public OVRHand.HandFinger bFinger = OVRHand.HandFinger.Pinky;
+        public HandFinger bFinger = HandFinger.Pinky;
         #endregion
 
         #region InputControlMethods
@@ -26,13 +28,12 @@ namespace FusedVR {
         public override bool GetButton(Hand h, Button b) {
             GameObject handObj = (h == Hand.Left) ? leftHand : rightHand;
             OVRHand hand = handObj.GetComponent<OVRHand>();
+            HandFinger finger = FingerMap(b);
 
-            if (hand) {
-                OVRHand.HandFinger finger = FingerMap(b);
+            if ( hand && hand.GetFingerConfidence(finger) == TrackingConfidence.High ) {               
                 return hand.GetFingerIsPinching(finger);
             }
 
-            Debug.LogError("MISSED BUTTON");
             return false; //null check for hand
         }
 
@@ -45,13 +46,12 @@ namespace FusedVR {
         public override float GetAxis(Hand h, Button b) {
             GameObject handObj = (h == Hand.Left) ? leftHand : rightHand;
             OVRHand hand = handObj.GetComponent<OVRHand>();
+            HandFinger finger = FingerMap(b);
 
-            if (hand) {
-                OVRHand.HandFinger finger = FingerMap(b);
+            if ( hand && hand.GetFingerConfidence(finger) == TrackingConfidence.High ) {
                 return hand.GetFingerPinchStrength(finger);
             }
 
-            Debug.LogError("MISSED AXIS");
             return 0f;
         }
 
@@ -60,13 +60,13 @@ namespace FusedVR {
         /// </summary>
         /// <param name="b">Which button should be mapped</param>
         /// <returns>An OVRHand.HandFinger corresponding to the button</returns>
-        private OVRHand.HandFinger FingerMap(Button b) {
+        private HandFinger FingerMap(Button b) {
             switch (b) {
                 case Button.Trigger: return triggerFinger;
                 case Button.Grip: return gripFinger;
                 case Button.A: return aFinger;
                 case Button.B: return bFinger;
-                default: return OVRHand.HandFinger.Index; //default to Index Finger even though all buttons have been mapped
+                default: return HandFinger.Index; //default to Index Finger even though all buttons have been mapped
             }
         }
         #endregion

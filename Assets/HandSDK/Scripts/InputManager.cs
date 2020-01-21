@@ -57,7 +57,7 @@ namespace FusedVR {
             hands.Show(swap);
             controllers.Show(!swap);
 
-            if ( swap && ovrRig ) { // if hands because the hand data forward is incorrectly offset by 90 degrees
+            if ( swap && ovrRig ) { // if hands, because the hand data forward is incorrectly offset by 90 degrees
                 ovrRig.LeftController.transform.localRotation = Quaternion.Euler(0f , 90f , 0f);
                 ovrRig.RightController.transform.localRotation = Quaternion.Euler(0f, 90f, 0f);
             } else if ( ovrRig ) { //if controllers, reset back to identity

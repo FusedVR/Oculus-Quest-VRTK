@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-namespace FusedVR {
+﻿namespace FusedVR {
     /// <summary>
     /// This class respresents a mapping for the control scheme used for Touch Controllers
     /// </summary>
